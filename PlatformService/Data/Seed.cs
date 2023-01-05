@@ -1,9 +1,11 @@
 ﻿using PlatformService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlatformService.Data;
 
 public class Seed
 {
+
     public static void Populate(IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
@@ -12,6 +14,13 @@ public class Seed
 
     private static void SeedData(AppDbContext context)
     {
+        try
+        {
+            context.Database.Migrate();
+        } catch (Exception e)
+        {
+
+        }
         if (!context.Platforms.Any())
         {
             Console.WriteLine("--> Seeding data");

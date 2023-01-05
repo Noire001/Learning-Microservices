@@ -11,14 +11,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+
 builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
+Console.WriteLine("Using PostgreSQL");
+builder.Services.AddDbContext<AppDbContext>(opt => 
+opt.UseNpgsql(builder.Configuration.GetConnectionString("PlatformsConn")));
+
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
+
+// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -28,5 +36,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 Seed.Populate(app);
 app.Run();
