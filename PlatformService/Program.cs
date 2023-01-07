@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlatformService.AsyncDataServices;
 using PlatformService.Data;
 using PlatformService.SyncDataServices.HTTP;
 
@@ -9,7 +10,7 @@ builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
